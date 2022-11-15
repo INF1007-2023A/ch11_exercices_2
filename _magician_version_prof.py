@@ -1,5 +1,5 @@
 """
-Chapitre 11.3
+Chapitre 11
 
 Classes pour représenter un magicien et ses pouvoirs magiques.
 """
