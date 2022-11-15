@@ -1,5 +1,5 @@
 """
-Chapitre 11.3
+Chapitre 11
 
 Fonctions pour simuler un combat.
 """
