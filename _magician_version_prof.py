@@ -27,6 +27,9 @@ class Spell(Weapon):
 		super().__init__(name, power, min_level)
 		self.mp_cost = mp_cost
 
+	def is_usable_by(self, character):
+		return isinstance(character, Magician) and super().is_usable_by(character)
+
 
 # TODO: Déclarer la classe Magician qui étend la classe Character
 class Magician(Character):
@@ -49,10 +52,19 @@ class Magician(Character):
 		super().__init__(name, max_hp, attack, defense, level)
 		# TODO: Initialiser le `magic_attack` avec le paramètre, le `max_mp` et `mp` de la même façon que `max_hp` et `hp`, `spell` à None et `using_magic` à False.
 		self.magic_attack = magic_attack
-		self.max_mp = max_mp
+		self.__max_mp = max_mp
 		self.mp = max_mp
 		self.spell = None
 		self.using_magic = False
+
+	@property
+	def max_mp(self):
+		return self.__max_mp
+
+	@max_mp.setter
+	def max_mp(self, value):
+		self.__max_mp = value
+		self.mp = self.mp
 
 	@property
 	def mp(self):
@@ -71,7 +83,7 @@ class Magician(Character):
 
 	@spell.setter
 	def spell(self, val):
-		if val is not None and val.min_level > self.level:
+		if val is not None and not val.is_usable_by(self):
 			raise ValueError()
 		self.__spell = val
 
@@ -82,7 +94,7 @@ class Magician(Character):
 			# Soustraire à son MP le coût du sort
 			self.mp -= self.spell.mp_cost
 			# Retourner le résultat du calcul de dégâts magiques
-			return self._compute_magical_damage(other)
+			return self._compute_magical_damage()
 		# Sinon
 		else:
 			# Retourner le résultat du calcul de dégâts physiques

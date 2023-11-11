@@ -9,7 +9,9 @@ Nous allons étendre le jeu que nous avons fait au chapitre 11.1 en ajoutant une
 ## Sort magique
 ### `magician.Spell`
 
-On veut une classe qui représente un sort magique. Un sort est utilisable comme une arme, et a donc les même propriétés que celle-ci (donc un nom, un niveau de puissance et un niveau minimal) en plus d'un coût d'utilisation en *MP* (points d'énergie magique). 
+On veut une classe qui représente un sort magique. Un sort est utilisable comme une arme, et a donc les même propriétés que celle-ci (donc un nom, un niveau de puissance et un niveau minimal) en plus d'un coût d'utilisation en *MP* (points d'énergie magique).
+
+Sa méthode `is_usable_by` vérifie que le personnage est un `Magician` en plus de la vérification de niveau.
 
 ## Magiciens
 ### `magician.Magician`

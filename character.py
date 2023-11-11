@@ -30,6 +30,9 @@ class Weapon:
 	def name(self):
 		return self.__name
 
+	def is_usable_by(self, character):
+		return character.level >= self.min_level
+
 	@classmethod
 	def make_unarmed(cls):
 		return cls("Unarmed", cls.UNARMED_POWER, 1)
@@ -48,28 +51,25 @@ class Character:
 
 	def __init__(self, name, max_hp, attack, defense, level):
 		self.__name = name
-		self.max_hp = max_hp
+		self.__max_hp = max_hp
+		self.hp = max_hp
 		self.attack = attack
 		self.defense = defense
 		self.level = level
 		self.weapon = None
-		self.hp = max_hp
-	
+
 	@property
 	def name(self):
 		return self.__name
 
 	@property
-	def weapon(self):
-		return self.__weapon
+	def max_hp(self):
+		return self.__max_hp
 
-	@weapon.setter
-	def weapon(self, val):
-		if val is None:
-			val = Weapon.make_unarmed()
-		if val.min_level > self.level:
-			raise ValueError(Weapon)
-		self.__weapon = val
+	@max_hp.setter
+	def max_hp(self, value):
+		self.__max_hp = value
+		self.hp = self.hp
 
 	@property
 	def hp(self):
@@ -78,6 +78,19 @@ class Character:
 	@hp.setter
 	def hp(self, val):
 		self.__hp = utils.clamp(val, 0, self.max_hp)
+
+	@property
+	def weapon(self):
+		return self.__weapon
+
+	# Affecter ce qui est passé comme valeur. Si la valeur est None, je lui met une arme vide (le Unarmed)
+	@weapon.setter
+	def weapon(self, value):
+		if value is None:
+			value = Weapon.make_unarmed()
+		elif not value.is_usable_by(self):
+			raise ValueError(Weapon)
+		self.__weapon = value
 
 	def compute_damage(self, other):
 		return Character.compute_damage_output(

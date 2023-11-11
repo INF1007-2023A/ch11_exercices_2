@@ -8,7 +8,7 @@ Fonctions pour simuler un combat.
 import random
 import utils
 from character import *
-from magician import *
+from _magician_version_prof import *
 
 
 def deal_damage(attacker: Character, defender: Character):

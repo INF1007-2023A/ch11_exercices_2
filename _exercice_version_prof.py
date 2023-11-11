@@ -6,7 +6,7 @@ Chapitre 11
 import math
 from inspect import *
 
-from game import *
+from _game_version_prof import *
 
 
 def simulate_battle():

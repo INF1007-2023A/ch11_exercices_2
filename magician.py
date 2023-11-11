@@ -23,7 +23,8 @@ class Spell:
 	"""
 
 	# TODO: __init__
-	pass
+
+	# TODO: Surcharger is_usable_by
 
 # TODO: Déclarer la classe Magician qui étend la classe Character
 class Magician:
@@ -47,12 +48,21 @@ class Magician:
 		pass
 
 	@property
+	def max_mp(self):
+		return self.__max_mp
+
+	@max_mp.setter
+	def max_mp(self, value):
+		self.__max_mp = value
+		self.mp = self.mp
+
+	@property
 	def mp(self):
-		pass
+		return self.__mp
 
 	@mp.setter
 	def mp(self, val):
-		pass
+		self.__mp = utils.clamp(val, 0, self.max_mp)
 
 	# TODO: Écrire les getter/setter pour la propriété `spell`.
 	#       On peut affecter None.
@@ -68,7 +78,7 @@ class Magician:
 		pass
 
 	def will_use_spell(self):
-		pass
+		return self.using_magic and self.spell is not None and self.mp >= self.spell.mp_cost
 
 	def _compute_magical_damage(self, other):
 		pass
