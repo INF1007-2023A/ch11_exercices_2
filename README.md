@@ -6,15 +6,21 @@
 
 Nous allons étendre le jeu que nous avons fait au chapitre 11.1 en ajoutant une classe de magicien.
 
-## Sort magique
-### `magician.Spell`
+## Sort magique (`magician.Spell`)
 
-On veut une classe qui représente un sort magique. Un sort est utilisable comme une arme, et a donc les même propriétés que celle-ci (donc un nom, un niveau de puissance et un niveau minimal) en plus d'un coût d'utilisation en *MP* (points d'énergie magique).
+On veut une classe qui représente un sort magique. Un sort est utilisable d'une façon similaire une arme, et a donc les même propriétés que celle-ci (donc un nom, un niveau de puissance et un niveau minimal) en plus d'un coût d'utilisation en *MP* (points d'énergie magique).
 
 Sa méthode `is_usable_by` vérifie que le personnage est un `Magician` en plus de la vérification de niveau.
 
-## Magiciens
-### `magician.Magician`
+<img src="doc/assets/dmg_eq_mag.png" width="600">
+
+Où *a* est l'attaquant et *d* est le défendeur. <br>
+*crit* est 2 environ 1/8 (12.5%) du temps, 1 sinon <br>
+*random* est un nombre aléatoire entre 85% et 100%
+
+On voit que le facteur de niveau est en fait le niveau du personnage + son attaque magique. On remarque aussi que le ratio attaque/défense est remplacé par 1. En effet, on suppose qu'il n'y a pas de défense contre la magie dans notre jeu. On passe donc `level + magic_attack` comme niveau et 1 comme attaque et défense à la formule de base.
+
+## Magiciens (`magician.Magician`)
 
 Dans notre jeu, un magicien est un personnage qui peut utiliser de la magie. Un magicien peut faire tout ce qu'un personnage régulier (`Character`) peut faire, comme utiliser une arme physique, en plus d'utiliser un sort de combat qui consomme des points d'énergie magique (des *MP*).
 
@@ -26,23 +32,7 @@ Un magicien a les attributs suivants, en plus de ceux de `Character` :
 `Magician.mp` : Les MP restants. <br>
 `Magician.spell` : Le sort utilisé par le magicien. <br>
 
-On a aussi la méthode `compute_damage()` qui calcule les dégâts infligés à un autre personnage (en paramètre). Si le personnage utilise son arme physique, la formule est exactement la même que pour les personnages réguliers :
-
-<img src="doc/assets/dmg_eq.png" width="600">
-
-Où *a* est l'attaquant et *d* est le défendeur. <br>
-*crit* est 2 environ 1/16 (6.25%) du temps, 1 sinon <br>
-*random* est un nombre aléatoire entre 85% et 100%
-
-Si le personnage utilise sa magie, le calcul est différent. La méthode `Magician.will_use_spell()` indique si le magicien utilise sa magie ou pas. On utilise exactement la même formule (donnée par `Character.compute_damage_output()`), mais en lui passant des valeurs différentes :
-
-<img src="doc/assets/dmg_eq_mag.png" width="600">
-
-Où *a* est l'attaquant et *d* est le défendeur. <br>
-*crit* est 2 environ 1/8 (12.5%) du temps, 1 sinon <br>
-*random* est un nombre aléatoire entre 85% et 100%
-
-On voit que le facteur de niveau est en fait le niveau du personnage + son attaque magique. On remarque aussi que le ratio attaque/défense est remplacé par 1. En effet, on suppose qu'il n'y a pas de défense contre la magie dans notre jeu. On passe donc `level + magic_attack` comme niveau et 1 comme attaque et défense à la formule de base.
+Si le personnage utilise sa magie, le calcul est différent. La méthode `Magician.will_use_spell()` indique si le magicien utilise sa magie ou pas. S'il utilise sa magie, alors il appellera le `use` de son `spell` plutôt que celui de son arme.
 
 ## Déroulement d'un combat
 
@@ -62,21 +52,19 @@ Exemple :
 	print(f"The battle ended in {turns} turns.")
 ```
 
-Sortie :
+Sortie possible :
 ```
-Damn! That magic dude would like to battle.
-Äpik accepted!
-  Damn! That magic dude used Big Chungus Power
-    Critical hit!
-    Äpik took 306 dmg
-  Äpik used BFG
-    Damn! That magic dude took 163 dmg
-  Damn! That magic dude used Big Chungus Power
-    Äpik took 166 dmg
-  Äpik used BFG
-    Damn! That magic dude took 181 dmg
-  Damn! That magic dude used Slingshot
-    Äpik took 29 dmg
-  Äpik is sleeping with the fishes.
-The battle ended in 5 turns.
+Damn! That magic dude starts a battle with Äpik!
+
+Damn! That magic dude used Big Chungus Power
+Äpik took 167 dmg
+
+Äpik used BFG
+Damn! That magic dude took 163 dmg
+
+Damn! That magic dude used Big Chungus Power
+Critical hit! Äpik took 348 dmg
+
+Äpik is sleeping with the fishes.
+The battle ended in 3 turns.
 ```
