@@ -6,24 +6,24 @@ Chapitre 11
 import math
 from inspect import *
 
-from _game_version_prof import *
+from game import *
+from _magician_version_prof import *
 
 
 def simulate_battle():
-	c1 = Character("�pik", 500, 150, 70, 70)
-	c2 = Character("G�mm�r", 550, 100, 120, 60)
+	c1 = Character("Äpik", 500, 150, 70, 70)
+	c2 = Character("Gämmör", 550, 100, 120, 60)
 	c3 = Magician("Damn! That magic dude", 450, 100, 50, 150, 50, 65)
+	w1 = Weapon("BFG", 100, 69)
+	w2 = Weapon("Deku Stick", 120, 1)
+	w3 = Weapon("Slingshot", 80, 20)
+	s1 = Spell("Big Chungus Power", 100, 35, 50)
 
-	c1.weapon = Weapon("BFG", 100, 69)
-	c2.weapon = Weapon("Deku Stick", 120, 1)
-	c3.spell = Spell("Big Chungus Power", 100, 35, 50)
-	c3.weapon = Weapon("Slingshot", 80, 20)
+	c1.weapon = w1
+	c2.weapon = w2
+	c3.spell = s1
+	c3.weapon = w3
 	c3.using_magic = True
-
-	#print(c3.compute_damage(c1))
-	#print(Character.compute_damage_output)
-	#print(Magician.compute_damage_output)
-	#print(c3.compute_damage_output)
 
 	turns = run_battle(c3, c1)
 	print(f"The battle ended in {turns} turns.")

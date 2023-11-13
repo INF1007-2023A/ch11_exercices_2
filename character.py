@@ -5,8 +5,6 @@ Classes pour représenter un personnage.
 """
 
 
-import random
-
 import utils
 
 
@@ -14,8 +12,8 @@ class Weapon:
 	"""
 	Une arme dans le jeu.
 
-	:param name: Le nom de l'arme
-	:param power: Le niveau d'attaque
+	:param name:      Le nom de l'arme
+	:param power:     Le niveau d'attaque
 	:param min_level: Le niveau minimal pour l'utiliser
 	"""
 
@@ -33,6 +31,25 @@ class Weapon:
 	def is_usable_by(self, character):
 		return character.level >= self.min_level
 
+	def use(self, user, opponent):
+		damage, crit = self.compute_damage(user, opponent)
+		opponent.hp -= damage
+		msg = ""
+		if crit:
+			msg += "Critical hit! "
+		msg += f"{opponent.name} took {damage} dmg"
+		return msg
+
+	def compute_damage(self, user, opponent):
+		return utils.compute_damage_output(
+			user.level,
+			self.power,
+			user.attack,
+			opponent.defense,
+			1/16,
+			(0.85, 1.00)
+		)
+
 	@classmethod
 	def make_unarmed(cls):
 		return cls("Unarmed", cls.UNARMED_POWER, 1)
@@ -42,21 +59,21 @@ class Character:
 	"""
 	Un personnage dans le jeu
 
-	:param name: Le nom du personnage
-	:param max_hp: HP maximum
-	:param attack: Le niveau d'attaque du personnage
+	:param name:    Le nom du personnage
+	:param max_hp:  HP maximum
+	:param attack:  Le niveau d'attaque du personnage
 	:param defense: Le niveau de défense du personnage
-	:param level: Le niveau d'expérience du personnage
+	:param level:   Le niveau d'expérience du personnage
 	"""
 
 	def __init__(self, name, max_hp, attack, defense, level):
 		self.__name = name
 		self.__max_hp = max_hp
-		self.hp = max_hp
 		self.attack = attack
 		self.defense = defense
 		self.level = level
 		self.weapon = None
+		self.hp = max_hp
 
 	@property
 	def name(self):
@@ -88,27 +105,12 @@ class Character:
 	def weapon(self, value):
 		if value is None:
 			value = Weapon.make_unarmed()
-		elif not value.is_usable_by(self):
+		if not value.is_usable_by(self):
 			raise ValueError(Weapon)
 		self.__weapon = value
 
-	def compute_damage(self, other):
-		return Character.compute_damage_output(
-			self.level,
-			self.weapon.power,
-			self.attack,
-			other.defense,
-			1/16,
-			(0.85, 1.00)
-		)
-
-	@staticmethod
-	def compute_damage_output(level, power, attack, defense, crit_chance, random_range):
-		level_factor = (2 * level) / 5 + 2
-		weapon_factor = power
-		atk_def_factor = attack / defense
-		critical = random.random() <= crit_chance
-		modifier = (2 if critical else 1) * random.uniform(*random_range)
-		damage = ((level_factor * weapon_factor * atk_def_factor) / 50 + 2) * modifier
-		return int(round(damage)), critical
+	def apply_turn(self, opponent):
+		msg = f"{self.name} used {self.weapon.name}\n"
+		msg += self.weapon.use(self, opponent)
+		return msg
 

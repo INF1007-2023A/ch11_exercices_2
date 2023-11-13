@@ -68,22 +68,19 @@ class Magician:
 	#       On peut affecter None.
 	#       Si le niveau minimal d'un sort est supérieur au niveau du personnage, on lève ValueError.
 
-	# TODO: Surcharger la méthode `compute_damage` 
-	def compute_damage(self, other):
+	# TODO: Surcharger la méthode `apply_turn`
+	def apply_turn(self, opponent):
+		main_attack = None
 		# Si le magicien va utiliser sa magie (`will_use_spell()`):
-			# Soustraire à son MP le coût du sort
-			# Retourner le résultat du calcul de dégâts magiques
+			# Utiliser le sort magique et soustraire à son MP le coût du sort
 		# Sinon
-			# Retourner le résultat du calcul de dégâts physiques
-		pass
-
+			# Utiliser l'arme physique
+		
+		msg = f"{self.name} used {main_attack.name}\n"
+		msg += main_attack.use(self, opponent)
+		return msg
+	
 	def will_use_spell(self):
 		return self.using_magic and self.spell is not None and self.mp >= self.spell.mp_cost
 
-	def _compute_magical_damage(self, other):
-		pass
-
-	def _compute_physical_damage(self, other):
-		# TODO: Calculer le dommage physique exactement de la même façon que dans `Character`
-		pass
 
