@@ -51,8 +51,10 @@ class Move(ABC):
 	def on_turn_begin(self):
 		"""
 		Cette méthode est appelée au début de chaque tour d'un combat. Elle est appelée une fois sur tous les moves des deux personnages impliqués dans le combat, même si ce move n'a pas été utilisé. Elle est appelée avant que les personnages choisissent et effectuent leur action pour le tour.
+		
+		:returns: Un message (str) qui décrit succinctment ce qui s'est produit. Optionnel et peut être None.
 		"""
-		pass
+		return None
 
 class SimpleDamagingMove(Move):
 	"""

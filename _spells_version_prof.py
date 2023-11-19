@@ -44,27 +44,29 @@ class IntensifyingMove(SimpleDamagingMove):
 	:param power:           La puissance de l'action.
 	:param bonus_increment: Le bonus de dommage cumulatif qui est gagné à chaque tour.
 	:param min_level:       Le niveau minimal pour l'utiliser.
+	
+	:ivar current_bonus: Le bonus accumulé depuis le début du combat.
 	"""
 
-	# 
 	def __init__(self, name, power, bonus_increment, min_level):
 		# On réutilise le __init__ de SimpleDamagingMove.
 		super().__init__(name, power, min_level)
 		# On initialise l'incrément de puissance.
 		self.bonus_increment = bonus_increment
-		# On crée un attribut pour compter le nombre de tours.
-		self.num_turns = 0
+		# On crée un attribut pour accumuler le bonus.
+		self.current_bonus = 0
 
 	def on_combat_begin(self):
-		# À chaque début de combat, on réinitialise le nombre de tours.
-		self.num_turns = 0
+		# À chaque début de combat, on réinitialise le bonus actuel.
+		self.current_bonus = 0
 
 	def on_turn_begin(self):
-		self.num_turns += 1
+		# On ajoute bonus_increment au bonus actuel.
+		self.current_bonus += self.bonus_increment
+		return f"{self.user.name}'s {self.name} has {self.current_bonus}"
 
 	def compute_damage(self, opponent):
 		# On calcule le dommage en réutilisant la version de base, puis on lui ajoute le bonus.
 		base_damage, crit = super().compute_damage(opponent)
-		bonus_damage = self.num_turns * self.bonus_increment
-		damage = base_damage + bonus_damage
+		damage = base_damage + self.current_bonus
 		return damage, crit

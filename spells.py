@@ -31,14 +31,14 @@ class IntensifyingMove(...): # TODO: Hériter de la bonne classe
 	:param bonus_increment: Le bonus de dommage cumulatif qui est gagné à chaque tour
 	:param min_level:       Le niveau minimal pour l'utiliser.
 	
-	:ivar num_turns: Le nombre de tour depuis le début du combat.
+	:ivar current_bonus: Le bonus accumulé depuis le début du combat.
 	"""
 	
 	# TODO: Le __init__ qui initialise la classe de base et l'attribut bonus_increment. On créer aussi un attribut `num_turns` qui compte le nombre de tour
 
-	# TODO: Surcharger la méthode `on_combat_begin` qui remet `num_turns` à 0.
+	# TODO: Surcharger la méthode `on_combat_begin` qui remet `current_bonus` à 0.
 
-	# TODO: Surcharger la méthode `on_turn_begin` qui incrémente `num_turns`
+	# TODO: Surcharger la méthode `on_turn_begin` qui ajoute `bonus_increment` à `current_bonus`.
 
-	# TODO: Surcharger la méthode `compute_damage` qui réutilise la version de la classe de base en lui ajoutant le bonus qui est = bonus_increment * num_turns
+	# TODO: Surcharger la méthode `compute_damage` qui réutilise la version de la classe de base en lui ajoutant le bonus accumulé.
 

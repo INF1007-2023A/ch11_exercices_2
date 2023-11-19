@@ -26,10 +26,8 @@ def run_battle(c1: Character, c2: Character):
 			m.on_combat_begin()
 	
 	while True:
-		for m in c1.moves + c2.moves:
-			if m is not None:
-				m.on_turn_begin()
-		
+		begin_turn(c1, c2)
+
 		dead_character = apply_turn(c1, c2)
 		if dead_character is not None:
 			print_characters(c1, c2)
@@ -39,6 +37,23 @@ def run_battle(c1: Character, c2: Character):
 		num_turns += 1
 	# Retourner nombre de tours effectués
 	return num_turns
+
+def begin_turn(c1, c2):
+	print_characters(c1, c2)
+	
+	# On collecte les messages (si applicable) retournés par les `on_turn_begin`.
+	turn_begin_messages = []
+	for m in c1.moves + c2.moves:
+		if m is not None:
+			msg = m.on_turn_begin()
+			if msg is not None and not msg.isspace():
+				turn_begin_messages.append(msg.strip())
+
+	# Si on a au moins un message non nul, on affiche le dialogue en attendant une touche.
+	if len(turn_begin_messages) != 0:
+		print("\n".join(turn_begin_messages))
+		print("\nEnter a key to continue...")
+		readkey()
 
 def apply_turn(c1, c2):
 	attacker = c1
