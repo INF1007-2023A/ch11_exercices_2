@@ -12,7 +12,7 @@ import random
 def clamp(val, min_val, max_val):
 	return max(min_val, min(val, max_val))
 
-def compute_damage_output(level, power, attack, defense, crit_chance, random_range):
+def compute_std_damage_output(level, power, attack, defense, crit_chance, random_range):
 	"""
 	Calcule le dommage selon la formule présentée.
 	

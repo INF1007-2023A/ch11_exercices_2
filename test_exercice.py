@@ -9,14 +9,11 @@ import inspect
 import random
 
 from character import *
-from magician import *
 
 
 class TestSpell(unittest.TestCase):
 	def setUp(self):
-		self.s1 = Spell("s1", 1, 69)
-		self.s2 = Spell("s2", 69, 1)
-		self.s3 = Spell("s3", 69, 42)
+		pass
 
 
 if __name__ == '__main__':
