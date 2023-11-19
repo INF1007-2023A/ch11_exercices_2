@@ -70,3 +70,40 @@ class IntensifyingMove(SimpleDamagingMove):
 		base_damage, crit = super().compute_damage(opponent)
 		damage = base_damage + self.current_bonus
 		return damage, crit
+
+class HealingMove(Move):
+	"""
+	Restaure un certain pourcentage du HP max de son utilisateur à chaque début de tour pour un certain nombre de tours
+	
+	:param name:           Le nom de l'action.
+	:param healing_factor: La proportion (entre 0 et 1) du max HP restaurée à chaque tour.
+	:param num_turns:      Le nombre de tours actifs.
+	:param min_level:      Le niveau minimal pour l'utiliser.
+	
+	:ivar num_remaining_active_turns: Le nombre de tours de guérison actifs restant.
+	"""
+
+	def __init__(self, name, healing_factor, num_turns, min_level):
+		# On réutilise le __init__ de Move.
+		super().__init__(name, min_level)
+		# On initialise les attributs 
+		self.healing_factor = healing_factor
+		self.num_turns = num_turns
+		self.remaining_active_turns = 0
+
+	def use(self, opponent):
+		self.remaining_active_turns = self.num_turns
+		return f"{self.user.name} will be healing for the next {self.num_turns} turns"
+
+	def on_combat_begin(self):
+		self.remaining_active_turns = 0
+
+	def on_turn_begin(self):
+		if self.remaining_active_turns > 0:
+			self.remaining_active_turns -= 1
+			return self.apply_healing()
+
+	def apply_healing(self):
+		healing = round(self.healing_factor * self.user.max_hp)
+		self.user.hp += healing
+		return f"{self.user.name} was healed for {healing} HP"

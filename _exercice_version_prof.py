@@ -19,10 +19,12 @@ def simulate_battle():
 	slingshot = SimpleDamagingMove("Slingshot", 80, 20)
 	suck = DrainingMove("Big Sucky", 70, 0.5, 30)
 	thiccer = IntensifyingMove("Thiccer and THICCER", 50, 5, 20)
+	feels_good = HealingMove("Feels Good Man", 0.05, 4, 20)
 
 	c1.main_move = bfg
+	c1.secondary_move = thiccer
 	c2.main_move = suck
-	c2.secondary_move = thiccer
+	c2.secondary_move = feels_good
 
 	turns = run_battle(c1, c2)
 	print(f"The battle ended in {turns} turns.")
