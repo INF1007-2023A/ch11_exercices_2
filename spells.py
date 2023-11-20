@@ -34,8 +34,7 @@ class IntensifyingMove(...): # TODO: Hériter de la bonne classe
 	:ivar current_bonus: Le bonus accumulé depuis le début du combat.
 	"""
 	
-	# TODO: Le __init__ qui initialise la classe de base et l'attribut bonus_increment. On créer aussi un attribut `num_turns` qui compte le nombre de tour
-
+	# TODO: Le __init__ qui initialise la classe de base et l'attribut bonus_increment. On créer aussi un attribut `current_bonus` qui compte le bonus actuel
 	# TODO: Surcharger la méthode `on_combat_begin` qui remet `current_bonus` à 0.
 
 	# TODO: Surcharger la méthode `on_turn_begin` qui ajoute `bonus_increment` à `current_bonus`.
